@@ -15,12 +15,10 @@ class ProblemFileSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_by']
 
     def create(self, validated_data):
-        # Ensure 'created_by' is set from the request context
         request = self.context.get('request')
         if request and hasattr(request, 'user'):
             validated_data['created_by'] = request.user
 
-        # Create and return the ProblemFile instance
         return ProblemFile.objects.create(**validated_data)
 
 
@@ -28,9 +26,11 @@ class CreateSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
         fields = ['submitted_by', 'prob_name', 'filename', 'submission_file', 'status', 'submitted_at']
-        read_only_fields = ['id', 'status']
+        read_only_fields = ['id', 'status','submitted_at']
 
     def validate_submission_file(self, value):
         if value.size > 5 * 1024 * 1024:  # 5MB size limit
             raise serializers.ValidationError("Submission file size must be less than 5MB.")
         return value
+        
+

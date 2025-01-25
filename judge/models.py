@@ -23,7 +23,7 @@ class Submission(models.Model):
     filename = models.CharField(max_length=255)
     prob_name = models.ForeignKey(ProblemFile, on_delete=models.CASCADE
                                   )
-    submission_file = models.FileField(upload_to='submissions/', max_length=400)
+    submission_file = models.FileField(upload_to='submissions/', max_length=400 , null=True)
     status = models.CharField(max_length=20, default='waiting')
     submitted_at = models.DateTimeField(auto_now_add=True)
 
